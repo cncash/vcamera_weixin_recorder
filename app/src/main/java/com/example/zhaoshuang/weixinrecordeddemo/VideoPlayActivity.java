@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.yixia.camera.MediaRecorderBase;
+import com.yixia.camera.VCamera;
 
 /**
  * Created by zhaoshuang on 17/2/24.
@@ -40,8 +41,8 @@ public class VideoPlayActivity extends BaseActivity {
                 vv_play.setLooping(true);
                 vv_play.start();
 
-                float widthF = vv_play.getVideoWidth()*1f/ MediaRecorderBase.VIDEO_HEIGHT;
-                float heightF = vv_play.getVideoHeight()*1f/MediaRecorderBase.VIDEO_WIDTH;
+                float widthF = vv_play.getVideoWidth()*1f/ VCamera.VIDEO_HEIGHT;
+                float heightF = vv_play.getVideoHeight()*1f/VCamera.VIDEO_WIDTH;
                 ViewGroup.LayoutParams layoutParams = vv_play.getLayoutParams();
                 layoutParams.width = (int) (windowWidth *widthF);
                 layoutParams.height = (int) (windowHeight *heightF);

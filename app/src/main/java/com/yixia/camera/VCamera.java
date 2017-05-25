@@ -17,6 +17,22 @@ import java.io.File;
  *
  */
 public class VCamera {
+
+	/** 预览视频宽度 */
+	public static int VIDEO_WIDTH = 1280;
+	/** 预览视频高度 */
+	public static int VIDEO_HEIGHT = 720;
+
+	/** 输出视频宽度 */
+	public static int OUTVIDEO_WIDTH = 640;
+	/** 输出视频高度 */
+	public static int OUTVIDEO_HEIGHT = 360;
+
+	/**
+	 * 是否是前置摄像头
+	 */
+	public static Boolean isfont = false;
+
 	/** 应用包名 */
 	private static String mPackageName;
 	/** 应用版本名称 */

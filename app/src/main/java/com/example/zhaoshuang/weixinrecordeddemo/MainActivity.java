@@ -17,6 +17,7 @@ import com.yixia.camera.VCamera;
 import com.yixia.camera.model.MediaObject;
 import com.yixia.videoeditor.adapter.UtilityAdapter;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -41,6 +42,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private TextView tv_hint;
     private TextView textView;
     private MyVideoView vv_play;
+    private ImageView iv_switch;
+    private ArrayList<String> paths = new ArrayList<>();
 
     //最大录制时间
     private int maxDuration = 8000;
@@ -61,6 +64,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         tv_hint = (TextView) findViewById(R.id.tv_hint);
         rl_bottom = (RelativeLayout) findViewById(R.id.rl_bottom);
         rl_bottom2 = (RelativeLayout) findViewById(R.id.rl_bottom2);
+        iv_switch = (ImageView) findViewById(R.id.iv_switch);
         ImageView iv_next = (ImageView) findViewById(R.id.iv_next);
         ImageView iv_close = (ImageView) findViewById(R.id.iv_close);
 
@@ -100,6 +104,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         iv_finish.setOnClickListener(this);
         iv_next.setOnClickListener(this);
         iv_close.setOnClickListener(this);
+        iv_switch.setOnClickListener(this);
     }
 
     private void changeButton(boolean flag){
@@ -161,16 +166,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     }
                     break;
                 case HANDLER_EDIT_VIDEO://合成视频的handler
-                    int progress = UtilityAdapter.FilterParserAction("", UtilityAdapter.PARSERACTION_PROGRESS);
-                    if(textView != null) textView.setText("视频编译中 "+progress+"%");
-                    if (progress == 100) {
-                        syntVideo();
-                    } else if (progress == -1) {
-                        closeProgressDialog();
-                        Toast.makeText(getApplicationContext(), "视频合成失败", Toast.LENGTH_SHORT).show();
-                    } else {
-                        sendEmptyMessageDelayed(HANDLER_EDIT_VIDEO, 30);
+//                    int progress = UtilityAdapter.FilterParserAction("", UtilityAdapter.PARSERACTION_PROGRESS);
+//                    if(textView != null) textView.setText("视频编译中 "+progress+"%");
+//                    if (progress == 100) {
+//                        syntVideo();
+//                    } else if (progress == -1) {
+//                        closeProgressDialog();
+//                        Toast.makeText(getApplicationContext(), "视频合成失败", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        sendEmptyMessageDelayed(HANDLER_EDIT_VIDEO, 30);
+//                    }
+
+                    for (MediaObject.MediaPart part : mMediaObject.getMediaParts()) {
+                        paths.add(part.mediaPath);
                     }
+                    Intent intent = new Intent(MainActivity.this, EditVideo.class);
+                    intent.putStringArrayListExtra("paths",paths);
+                    startActivity(intent);
+                    finish();
+
                     break;
             }
         }
@@ -299,12 +313,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.iv_next:
                 rb_start.setDeleteMode(false);
-                Intent intent = new Intent(MainActivity.this, EditVideoActivity.class);
-                intent.putExtra("path", MyApplication.VIDEO_PATH+"/finish.mp4");
-                startActivityForResult(intent, REQUEST_KEY);
+
+                for (MediaObject.MediaPart part : mMediaObject.getMediaParts()) {
+                    paths.add(part.mediaPath);
+                }
+                Intent intent = new Intent(MainActivity.this, EditVideo.class);
+                intent.putStringArrayListExtra("paths",paths);
+                startActivity(intent);
+                this.finish();
+
+//                Intent intent = new Intent(MainActivity.this, EditVideoActivity.class);
+//                intent.putExtra("path", MyApplication.VIDEO_PATH+"/finish.mp4");
+//                startActivityForResult(intent, REQUEST_KEY);
                 break;
             case R.id.iv_close:
                 initMediaRecorderState();
+                break;
+            case R.id.iv_switch:
+                mMediaRecorder.switchCamera();
                 break;
         }
     }

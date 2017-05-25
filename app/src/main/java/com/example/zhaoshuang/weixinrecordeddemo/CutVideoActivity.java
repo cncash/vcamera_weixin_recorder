@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yixia.camera.MediaRecorderBase;
+import com.yixia.camera.VCamera;
 import com.yixia.videoeditor.adapter.UtilityAdapter;
 
 import java.io.File;
@@ -29,8 +30,8 @@ public class CutVideoActivity extends BaseActivity implements View.OnClickListen
     private int windowWidth;
     private int windowHeight;
     private int dp50;
-    private int videoWidth = MediaRecorderBase.VIDEO_HEIGHT;
-    private int videoHeight = MediaRecorderBase.VIDEO_HEIGHT;
+    private int videoWidth = VCamera.VIDEO_HEIGHT;
+    private int videoHeight = VCamera.VIDEO_HEIGHT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,8 @@ public class CutVideoActivity extends BaseActivity implements View.OnClickListen
                 videoWidth = vv_play.getVideoWidth();
                 videoHeight = vv_play.getVideoHeight();
 
-                float widthF = vv_play.getVideoWidth()*1f/MediaRecorderBase.VIDEO_HEIGHT;
-                float heightF = vv_play.getVideoHeight()*1f/MediaRecorderBase.VIDEO_WIDTH;
+                float widthF = vv_play.getVideoWidth()*1f/VCamera.VIDEO_HEIGHT;
+                float heightF = vv_play.getVideoHeight()*1f/VCamera.VIDEO_WIDTH;
                 ViewGroup.LayoutParams layoutParams = vv_play.getLayoutParams();
                 layoutParams.width = (int) (windowWidth *widthF);
                 layoutParams.height = (int) (windowHeight *heightF);

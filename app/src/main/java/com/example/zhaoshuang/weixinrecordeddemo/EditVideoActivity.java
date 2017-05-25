@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yixia.camera.MediaRecorderBase;
+import com.yixia.camera.VCamera;
 import com.yixia.videoeditor.adapter.UtilityAdapter;
 
 import java.io.BufferedOutputStream;
@@ -116,8 +117,8 @@ public class EditVideoActivity extends BaseActivity implements View.OnClickListe
                 if(isPlaying){
                     videoWidth = vv_play.getVideoWidth();
                     videoHeight = vv_play.getVideoHeight();
-                    float widthF = videoWidth*1f/MediaRecorderBase.VIDEO_HEIGHT;
-                    float heightF = videoHeight*1f/MediaRecorderBase.VIDEO_WIDTH;
+                    float widthF = videoWidth*1f/ VCamera.VIDEO_HEIGHT;
+                    float heightF = videoHeight*1f/VCamera.VIDEO_WIDTH;
                     ViewGroup.LayoutParams layoutParams = vv_play.getLayoutParams();
                     layoutParams.width = (int) (windowWidth*widthF);
                     layoutParams.height = (int) (windowHeight*heightF);

@@ -24,6 +24,7 @@
             android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity android:name=".VideoPlayActivity" />
         <activity android:name=".CutVideoActivity" />
+        <activity android:name=".EditVideo"/>
     </application>
 
 </manifest>

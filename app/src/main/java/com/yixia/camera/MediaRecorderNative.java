@@ -7,6 +7,8 @@ import android.util.Log;
 import com.yixia.camera.model.MediaObject;
 import com.yixia.videoeditor.adapter.UtilityAdapter;
 
+import static com.yixia.camera.VCamera.isfont;
+
 /**
  * 视频录制：边录制边底层处理视频（旋转和裁剪）
  * 
@@ -34,7 +36,15 @@ public class MediaRecorderNative extends MediaRecorderBase implements MediaRecor
 			String cmd = String.format("filename = \"%s\"; ", result.mediaPath);
 			//如果需要定制非480x480的视频，可以启用以下代码，其他vf参数参考ffmpeg的文档：
 			//cmd += String.format("addcmd = %s; "," -vf \"transpose=1,crop="+UtilityAdapter.VIDEO_WIDTH+":"+UtilityAdapter.VIDEO_HEIGHT+":0:240\" ");
-			cmd += String.format("addcmd = %s; "," -vf \"transpose=1\" ");
+//			cmd += String.format("addcmd = %s; "," -vf \"transpose=1\" ");
+
+			//如果需要定制非480x480的视频，可以启用以下代码，其他vf参数参考ffmpeg的文档：
+			if(isfont){
+				cmd += String.format("addcmd = %s; "," -vf \"transpose=3,scale="+VCamera.OUTVIDEO_HEIGHT+":"+VCamera.OUTVIDEO_WIDTH+":0:0\" ");
+			}else{
+				cmd += String.format("addcmd = %s; "," -vf \"transpose=1,scale="+VCamera.OUTVIDEO_HEIGHT+":"+VCamera.OUTVIDEO_WIDTH+":0:0\" ");
+			}
+
 			UtilityAdapter.FilterParserAction(cmd, UtilityAdapter.PARSERACTION_START);
 			if (mAudioRecorder == null && result != null) {
 				mAudioRecorder = new AudioRecorder(this);
@@ -65,11 +75,11 @@ public class MediaRecorderNative extends MediaRecorderBase implements MediaRecor
 	@Override
 	protected void onStartPreviewSuccess() {
 		if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
-			UtilityAdapter.RenderInputSettings(MediaRecorderBase.VIDEO_WIDTH, MediaRecorderBase.VIDEO_HEIGHT, 0, UtilityAdapter.FLIPTYPE_NORMAL);
+			UtilityAdapter.RenderInputSettings(VCamera.VIDEO_WIDTH, VCamera.VIDEO_HEIGHT, 0, UtilityAdapter.FLIPTYPE_NORMAL);
 		} else {
-			UtilityAdapter.RenderInputSettings(MediaRecorderBase.VIDEO_WIDTH, MediaRecorderBase.VIDEO_HEIGHT, 180, UtilityAdapter.FLIPTYPE_HORIZONTAL);
+			UtilityAdapter.RenderInputSettings(VCamera.VIDEO_WIDTH, VCamera.VIDEO_HEIGHT, 180, UtilityAdapter.FLIPTYPE_HORIZONTAL);
 		}
-		UtilityAdapter.RenderOutputSettings(MediaRecorderBase.VIDEO_WIDTH, MediaRecorderBase.VIDEO_HEIGHT, mFrameRate, UtilityAdapter.OUTPUTFORMAT_YUV | UtilityAdapter.OUTPUTFORMAT_MASK_MP4 /*| UtilityAdapter.OUTPUTFORMAT_MASK_HARDWARE_ACC*/);
+		UtilityAdapter.RenderOutputSettings(VCamera.VIDEO_WIDTH, VCamera.VIDEO_HEIGHT, mFrameRate, UtilityAdapter.OUTPUTFORMAT_YUV | UtilityAdapter.OUTPUTFORMAT_MASK_MP4 /*| UtilityAdapter.OUTPUTFORMAT_MASK_HARDWARE_ACC*/);
 	}
 
 	@Override

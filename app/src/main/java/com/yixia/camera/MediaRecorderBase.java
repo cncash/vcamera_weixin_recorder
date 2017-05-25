@@ -39,11 +39,6 @@ import java.util.List;
  */
 public abstract class MediaRecorderBase implements Callback, PreviewCallback, IMediaRecorder {
 
-	/** 视频宽度 */
-	public static int VIDEO_WIDTH = 1280;
-	/** 视频高度 */
-	public static int VIDEO_HEIGHT = 720;
-
 	/** 未知错误 */
 	public static final int MEDIA_ERROR_UNKNOWN = 1;
 	/** 预览画布设置错误 */
@@ -186,8 +181,10 @@ public abstract class MediaRecorderBase implements Callback, PreviewCallback, IM
 	/** 切换前置/后置摄像头 */
 	public void switchCamera() {
 		if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
+			VCamera.isfont = true;
 			switchCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
 		} else {
+			VCamera.isfont = false;
 			switchCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
 		}
 	}
@@ -331,8 +328,8 @@ public abstract class MediaRecorderBase implements Callback, PreviewCallback, IM
 	 * 设置视频的宽高
 	 */
 	public void setVideoRecordedSize(int width, int height){
-		VIDEO_WIDTH = width;
-		VIDEO_HEIGHT = height;
+		VCamera.VIDEO_WIDTH = width;
+		VCamera.VIDEO_HEIGHT = height;
 	}
 
 	/**
@@ -455,17 +452,17 @@ public abstract class MediaRecorderBase implements Callback, PreviewCallback, IM
 		boolean flag = false;
 		for (int x=0; x<mSupportedPreviewSizes.size(); x++){
 			Size size = mSupportedPreviewSizes.get(x);
-			if(size.width*size.height == MediaRecorderBase.VIDEO_WIDTH*MediaRecorderBase.VIDEO_HEIGHT){
+			if(size.width*size.height == VCamera.VIDEO_WIDTH*VCamera.VIDEO_HEIGHT){
 				flag = true;
 			}
 		}
 
 		if(flag){
-			mParameters.setPreviewSize(MediaRecorderBase.VIDEO_WIDTH, MediaRecorderBase.VIDEO_HEIGHT);
+			mParameters.setPreviewSize(VCamera.VIDEO_WIDTH, VCamera.VIDEO_HEIGHT);
 		}else{
-			MediaRecorderBase.VIDEO_WIDTH = 1280;
-			MediaRecorderBase.VIDEO_WIDTH = 720;
-			mParameters.setPreviewSize(MediaRecorderBase.VIDEO_WIDTH, MediaRecorderBase.VIDEO_HEIGHT);
+			VCamera.VIDEO_WIDTH = 1280;
+			VCamera.VIDEO_WIDTH = 720;
+			mParameters.setPreviewSize(VCamera.VIDEO_WIDTH, VCamera.VIDEO_HEIGHT);
 		}
 
 		// 设置输出视频流尺寸，采样率
